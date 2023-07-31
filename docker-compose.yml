@@ -1,0 +1,90 @@
+version: '3.8'
+
+services:
+
+  bv.server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: bv.server
+    environment:
+      - FLASK_ENV=development
+    command: flask run -h 0.0.0.0 --debug
+    stdin_open: true
+    ports:
+      - '5001:5000'
+    volumes:
+      - ./server:/app
+    networks:
+      - bv.network
+
+  # client:
+  #   image: node:16-alpine
+  #   container_name: erp.client
+  #   working_dir: /var/www/html
+  #   command: "yarn run dev"
+  #   ports:
+  #     - 8000:5173
+  #   restart: unless-stopped
+  #   volumes:
+  #     - './client/erp/:/var/www/html'
+  #   networks:
+  #     - erp.network
+
+  bv.mysql:
+    image: mysql:8.0
+    container_name: bv.mysql
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - ./docker/data/db:/var/lib/mysql
+    restart: always
+    networks:
+      - bv.network
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "3311:3306"
+
+  # mini-erp.postgres:
+  #   image: postgres:10.5
+  #   container_name: mini-erp.postgres
+  #   restart: always
+  #   environment:
+  #     - POSTGRES_USER=${POSTGRES_USER}
+  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  #   logging:
+  #     options:
+  #       max-size: 10m
+  #       max-file: "3"
+  #   ports:
+  #     - '5438:5432'
+  #   volumes:
+  #     - ./docker/postgres-data:/var/lib/postgresql/data
+  #     # copy the sql script to create tables
+
+  #   networks:
+  #     - mini-erp.network
+
+  bv.nginx:
+    image: webapp-nginx
+    container_name: bv.nginx
+    build:
+      context: ./server
+      dockerfile: dockerfile-nginx
+    ports:
+      - 5000:80
+    depends_on:
+      - bv.server
+
+volumes:
+  bv.mysql:
+
+networks:
+  bv.network:
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.18.5.0/25
