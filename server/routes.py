@@ -28,6 +28,13 @@ class BaseUser(Schema):
     created_at = fields.String(required=False)
     updated_at = fields.String(required=False)
 
+class BaseValidationEntry(Schema):
+    id = fields.String(required=True)
+    user_id = fields.String(required=True)
+    result = fields.Dict(required=True)
+    created_at = fields.String(required=False)
+    updated_at = fields.String(required=False)
+
 auth = HTTPTokenAuth(scheme='Bearer')
 
 ALLOWED_EXTENSIONS = set(['txt', 'csv', 'xls', 'xlsx'])
@@ -79,7 +86,12 @@ def login():
             return api_response_error(401, {"auth": "failed"})
         g.user = user
         token = user.generate_auth_token(600)
-        return api_response_success({"token": token.decode('ascii')}, start_time)
+        schema = BaseUser()
+        res = {
+            'token': token.decode('ascii'),
+            'user': schema.dump(user)
+        }
+        return api_response_success(res, start_time)
     except ValidationError as err:
         return api_response_error(400, err.messages)
 
@@ -124,11 +136,21 @@ def upload_file():
             data_dict = {str(int(item[0])): item[1]
                          for item in validation_result['percentage_emp'].tolist()}
             response_data = {
+                'user_id': g.user.id,
                 'passed_validation': passed_validation,
-                'percentages_plot_data': data_dict
+                'percentages_plot_data': data_dict,
+                'created_at': '',
+                'updated_at': ''
             }
-            save_result(response_data)
-            return api_response_success(response_data, start_time)
+            res = save_result(response_data)
+            
+            return api_response_success({
+                'user_id': g.user.id,
+                'passed_validation': passed_validation,
+                'percentages_plot_data': data_dict,
+                'created_at': res.created_at,
+                'updated_at': res.updated_at
+            }, start_time)
         else:
             return api_response_error(400, {'message': 'Allowed file types are txt, csv'})
     except Exception as e:
@@ -174,6 +196,18 @@ def add_user():
     except ValidationError as err:
         return api_response_error(400, err.messages)
 
+@app.route('/api/validation-entries', methods=['GET'])
+@auth.login_required
+def get_validation_entries():
+    try:
+        start_time = time.time()
+        schema = BaseValidationEntry(many=True)
+        users = ValidationEntry.query.all()
+        serialized_data = schema.dump(users)
+        return api_response_success(serialized_data, start_time)
+    except Exception as e:
+        app.logger.error(e)
+        return api_response_error(500, {'message': 'There was a problem while retrieving the Validation Entries'})
 
 def save_result(result):
     try:
@@ -181,6 +215,7 @@ def save_result(result):
                                 result=result)
         db.session.add(entry)
         db.session.commit()
+        return entry
     except Exception as e:
         logging.error(e)
 

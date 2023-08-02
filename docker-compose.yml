@@ -18,18 +18,23 @@ services:
     networks:
       - bv.network
 
-  # client:
-  #   image: node:16-alpine
-  #   container_name: erp.client
-  #   working_dir: /var/www/html
-  #   command: "yarn run dev"
-  #   ports:
-  #     - 8000:5173
-  #   restart: unless-stopped
-  #   volumes:
-  #     - './client/erp/:/var/www/html'
-  #   networks:
-  #     - erp.network
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    image: node:lts
+    container_name: bv.client
+    working_dir: /var/www/html
+    command: "yarn dev"
+    ports:
+      - 8000:5173
+    restart: unless-stopped
+    volumes:
+      - './client:/var/www/html'
+      - /var/www/html/node_modules
+    tty: true
+    networks:
+      - bv.network
 
   bv.mysql:
     image: mysql:8.0

@@ -6,6 +6,8 @@ import time
 from werkzeug.security import generate_password_hash, check_password_hash
 
 SECRET_KEY = '1234'
+EXPIRES_IN = 900000000;   
+
 class User(db.Model):
     """Data model for users."""
 
@@ -28,7 +30,7 @@ class User(db.Model):
     def verify_password(self, password):
         return check_password_hash(self.password, password)
     
-    def generate_auth_token(self, expires_in = 600000):
+    def generate_auth_token(self, expires_in = EXPIRES_IN):
         return jwt.encode(
             { 'id': self.id, 'exp': time.time() + expires_in }, 
             SECRET_KEY, algorithm='HS256')
