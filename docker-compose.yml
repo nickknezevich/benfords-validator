@@ -21,14 +21,15 @@ services:
   client:
     build:
       context: ./client
-      target: 'production-stage'
+      target: 'develop-stage'
       dockerfile: Dockerfile
     container_name: bv.client
     ports:
-      - 8000:80
+      - 8000:5173
     restart: unless-stopped
     volumes:
       - './client:/app'
+      - /app/node_modules
     tty: true
     networks:
       - bv.network
@@ -70,16 +71,16 @@ services:
   #   networks:
   #     - mini-erp.network
 
-  bv.nginx:
-    image: webapp-nginx
-    container_name: bv.nginx
-    build:
-      context: ./nginx
-      dockerfile: dockerfile-nginx
-    ports:
-      - 5000:80
-    depends_on:
-      - bv.server
+  # bv.nginx:
+  #   image: webapp-nginx
+  #   container_name: bv.nginx
+  #   build:
+  #     context: ./nginx
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 8000:80
+  #   depends_on:
+  #     - bv.server
 
 volumes:
   bv.mysql:

@@ -2,6 +2,8 @@ FROM node:lts as develop-stage
 WORKDIR /app
 COPY package*.json ./
 RUN yarn install
+#RUN rm /etc/nginx/conf.d/default.conf
+COPY ./nginx.conf /etc/nginx/conf.d
 COPY . .
 # build stage
 FROM develop-stage as build-stage
