@@ -1,5 +1,5 @@
 # benfords-validator
-Benfords validator is a small application that will allow you to upload files (txt, csv, xlxs) and test designated column against the Benford's Law.
+Benfords validator is a small application that will allow you to upload files (txt, csv, xlxs) and test designated column dataset against the Benford's Law.
 
 ## Instalation
 
@@ -16,7 +16,7 @@ Backend will run on http://localhost:5001
 
 ## Users
 
-There are two created users with folling credentials:
+There are two created users with following credentials:
 username: jsmith, password: test1234
 username: alincoln, password: test1234
 

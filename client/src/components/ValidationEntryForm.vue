@@ -63,6 +63,7 @@ function onSubmit(values, { setErrors }) {
                 <Field name="separator" type="text" class="form-control" :class="{ 'is-invalid': errors.separator }"
                     placeholder="Separator" />
                 <div class="invalid-feedback">{{ errors.separator }}</div>
+                <small class="text-muted">Eg. \td</small>
             </div>
             <div class="form-group pb-3">
                 <button class="btn btn-lg btn-primary" :disabled="isSubmitting">

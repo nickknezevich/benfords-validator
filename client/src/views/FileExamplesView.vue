@@ -10,15 +10,15 @@
         </thead>
         <tbody>
             <tr>
-                <td><a href="/src/assets/file-examples/census_2009b.csv">Census 2009b</a></td>
+                <td><a href="https://github.com/nickknezevich/benfords-validator/blob/main/client/src/assets/file-examples/census_2009b.csv">Census 2009b</a></td>
                 <td>CSV</td>
             </tr>
             <tr>
-                <td><a href="/src/assets/file-examples/acs205_census_tract_data.csv">2015 Census Tract Data</a></td>
+                <td><a href="https://github.com/nickknezevich/benfords-validator/blob/main/client/src/assets/file-examples/acs2015_census_tract_data.csv">2015 Census Tract Data</a></td>
                 <td>CSV</td>
             </tr>
             <tr>
-                <td><a href="/src/assets/file-examples/World_Population_Live_Dataset.csv">World Population Live Dataset</a></td>
+                <td><a href="https://github.com/nickknezevich/benfords-validator/blob/main/client/src/assets/file-examples/World_Population_Live_Dataset.csv">World Population Live Dataset</a></td>
                 <td>CSV</td>
             </tr>
         </tbody>
