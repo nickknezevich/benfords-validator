@@ -461,6 +461,11 @@ vue-router@^4.2.4:
   dependencies:
     "@vue/devtools-api" "^6.5.0"
 
+vue-toastification@^2.0.0-rc.5:
+  version "2.0.0-rc.5"
+  resolved "https://registry.yarnpkg.com/vue-toastification/-/vue-toastification-2.0.0-rc.5.tgz#92798604d806ae473cfb76ed776fae294280f8f8"
+  integrity sha512-q73e5jy6gucEO/U+P48hqX+/qyXDozAGmaGgLFm5tXX4wJBcVsnGp4e/iJqlm9xzHETYOilUuwOUje2Qg1JdwA==
+
 vue-use-popperjs@^2:
   version "2.3.8"
   resolved "https://registry.yarnpkg.com/vue-use-popperjs/-/vue-use-popperjs-2.3.8.tgz#a405e24c35620b8f59a4ab9a9846ae34ff960f84"

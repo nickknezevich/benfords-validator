@@ -6,6 +6,7 @@ import { mixed } from 'yup';
 import { useValidationEntriesStore } from '../stores/validation_entries.store';
 import { defineProps, defineEmits, ref, toRefs, watch } from 'vue';
 import Modal from './Modal.vue';
+import { useToast } from "vue-toastification";
 
 const schema = Yup.object().shape({
     title: Yup.string().required('File title is required'),
@@ -13,6 +14,8 @@ const schema = Yup.object().shape({
     file: Yup.mixed().required('File is required'),
     separator: Yup.string()
 });
+
+const toast = useToast();
 
 const emit = defineEmits();
 
@@ -28,6 +31,9 @@ function onSubmit(values, { setErrors }) {
 
     validationEntriesStore.add(title, file, reference_column, separator)
         .then(() => {
+            toast.success("New Validation Succesfully Added!", {
+                timeout: 2000
+            });
             emit("update:modelValue", false) // Close the modal after successful submission
 
         })

@@ -6,6 +6,8 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile
+    depends_on:
+      - bv.mysql
     container_name: bv.server
     environment:
       - FLASK_ENV=development
