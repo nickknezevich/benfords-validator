@@ -44,8 +44,7 @@ def create_app():
         user2 = User(first_name='Andrew', last_name="Lincoln", username="alincoln", email="walkingdead@google.com", password=generate_password_hash("test1234"))
 
         validationEntry1 = ValidationEntry(user_id=1, title='World Population Data', 
-            result={
-                "passed_validation": False, "percentages_plot_data": {"1": 29.914529914529915, "2": 16.666666666666664, "3": 14.957264957264956, "4": 8.974358974358974, "5": 8.11965811965812, "6": 6.837606837606838, "7": 5.555555555555555, "8": 3.8461538461538463, "9": 5.128205128205128}}
+            result={"passed_validation": True, "percentages_plot_data": {"1": 29.914529914529915, "2": 15.81196581196581, "3": 14.102564102564102, "4": 8.974358974358974, "5": 11.11111111111111, "6": 8.11965811965812, "7": 3.418803418803419, "8": 4.273504273504273, "9": 4.273504273504273}}
         )
 
         validationEntry2 = ValidationEntry(user_id=1, title='2009 Census Data', 

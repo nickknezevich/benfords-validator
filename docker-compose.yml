@@ -18,20 +18,20 @@ services:
     networks:
       - bv.network
 
-  # client:
-  #   build:
-  #     context: ./client
-  #     target: 'production-stage'
-  #     dockerfile: Dockerfile
-  #   container_name: bv.client
-  #   ports:
-  #     - 8000:80
-  #   restart: unless-stopped
-  #   volumes:
-  #     - './client:/app'
-  #   tty: true
-  #   networks:
-  #     - bv.network
+  client:
+    build:
+      context: ./client
+      target: 'production-stage'
+      dockerfile: Dockerfile
+    container_name: bv.client
+    ports:
+      - 8000:80
+    restart: unless-stopped
+    volumes:
+      - './client:/app'
+    tty: true
+    networks:
+      - bv.network
 
   bv.mysql:
     image: mysql:8.0

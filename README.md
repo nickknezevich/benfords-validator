@@ -23,3 +23,6 @@ username: alincoln, password: test1234
 User jsmith will have two predefined validation entries.
 
 ## In Examples you will find files which were used to test the application.
+### These files resides in assets file examples.
+
+https://github.com/nickknezevich/benfords-validator/tree/main/client/src/assets/file-examples
