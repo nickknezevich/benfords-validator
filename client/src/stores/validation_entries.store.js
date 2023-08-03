@@ -20,18 +20,21 @@ export const useValidationEntriesStore = defineStore({
                 .then(response => this.validationEntries = response.data.data)
                 .catch(error => this.validationEntries = { error })
         },
-        async add(title, file, reference_column) {
+        async add(title, file, reference_column, separator) {
             var bodyFormData = new FormData();
             bodyFormData.append('title', title);
             bodyFormData.append('file', file);
             bodyFormData.append('reference_column', reference_column);
+            if(separator !== undefined){
+                bodyFormData.append('separator', separator);
+            }
+            
             const response = await connector.post(`/api/file-upload`, bodyFormData, {
                 headers: {
                     Authorization: `Bearer ${authToken.token}`,
                     'Content-Type': `multipart/form-data; boundary=${bodyFormData._boundary}`
                   }
             });
-            console.log(response.data.data)
             // update pinia state
             this.validationEntries.push(response.data.data);
         },

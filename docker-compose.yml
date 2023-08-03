@@ -18,23 +18,20 @@ services:
     networks:
       - bv.network
 
-  client:
-    build:
-      context: ./client
-      dockerfile: Dockerfile
-    image: node:lts
-    container_name: bv.client
-    working_dir: /var/www/html
-    command: "yarn dev"
-    ports:
-      - 8000:5173
-    restart: unless-stopped
-    volumes:
-      - './client:/var/www/html'
-      - /var/www/html/node_modules
-    tty: true
-    networks:
-      - bv.network
+  # client:
+  #   build:
+  #     context: ./client
+  #     target: 'production-stage'
+  #     dockerfile: Dockerfile
+  #   container_name: bv.client
+  #   ports:
+  #     - 8000:80
+  #   restart: unless-stopped
+  #   volumes:
+  #     - './client:/app'
+  #   tty: true
+  #   networks:
+  #     - bv.network
 
   bv.mysql:
     image: mysql:8.0
@@ -77,7 +74,7 @@ services:
     image: webapp-nginx
     container_name: bv.nginx
     build:
-      context: ./server
+      context: ./nginx
       dockerfile: dockerfile-nginx
     ports:
       - 5000:80

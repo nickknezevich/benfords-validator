@@ -10,7 +10,8 @@ import Modal from './Modal.vue';
 const schema = Yup.object().shape({
     title: Yup.string().required('File title is required'),
     reference_column: Yup.string().required('Reference column is required'),
-    file: Yup.mixed().required('File is required')
+    file: Yup.mixed().required('File is required'),
+    separator: Yup.string()
 });
 
 const emit = defineEmits();
@@ -23,9 +24,9 @@ const showModal = ref(true);
 
 function onSubmit(values, { setErrors }) {
     const validationEntriesStore = useValidationEntriesStore();
-    const { title, reference_column, file } = values;
+    const { title, reference_column, file, separator } = values;
 
-    validationEntriesStore.add(title, file, reference_column)
+    validationEntriesStore.add(title, file, reference_column, separator)
         .then(() => {
             emit("update:modelValue", false) // Close the modal after successful submission
 
@@ -56,6 +57,12 @@ function onSubmit(values, { setErrors }) {
                 <Field name="file" type="file" ref="file" class="form-control" :class="{ 'is-invalid': errors.file }"
                     placeholder="File" />
                 <div class="invalid-feedback">{{ errors.file }}</div>
+            </div>
+            <div class="form-group pb-3">
+                <label for="separator" class="form-label">Separator</label>
+                <Field name="separator" type="text" class="form-control" :class="{ 'is-invalid': errors.separator }"
+                    placeholder="Separator" />
+                <div class="invalid-feedback">{{ errors.separator }}</div>
             </div>
             <div class="form-group pb-3">
                 <button class="btn btn-lg btn-primary" :disabled="isSubmitting">

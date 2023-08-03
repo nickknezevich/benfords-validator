@@ -13,11 +13,10 @@ from .models import User, ValidationEntry, db
 import logging
 logging.getLogger('flask_cors').level = logging.DEBUG
 
-# Base Marschallow Seralized Schema
+# Base Marschallow Seralized Schemas
 class Login(Schema):
     username = fields.String(required=True)
     password = fields.String(required=True)
-
 
 class BaseUser(Schema):
     username = fields.String(required=True)
@@ -28,12 +27,35 @@ class BaseUser(Schema):
     created_at = fields.String(required=False)
     updated_at = fields.String(required=False)
 
+class SerializedUser(Schema):
+    id=fields.String(required=True)
+    email = fields.String(required=True)
+    first_name = fields.String(required=True)
+    last_name = fields.String(required=True)
+    created_at = fields.String(required=False)
+    updated_at = fields.String(required=False)
+
 class BaseValidationEntry(Schema):
     id = fields.String(required=True)
-    user_id = fields.String(required=True)
+    user_id = fields.String(required=False)
+    title = fields.String(required=True)
     result = fields.Dict(required=True)
     created_at = fields.String(required=False)
     updated_at = fields.String(required=False)
+
+class SerializedValidationEntry(Schema):
+    id = fields.String(required=True)
+    user = fields.Nested(SerializedUser())
+    title = fields.String(required=True)
+    result = fields.Dict(required=True)
+    created_at = fields.String(required=False)
+    updated_at = fields.String(required=False)
+
+class ValidationEntryRequest(Schema):
+    title = fields.String(required=True)
+    file = fields.Raw(type='file')
+    reference_column = fields.String(required=True)
+    separator=fields.String(required=False)
 
 auth = HTTPTokenAuth(scheme='Bearer')
 
@@ -107,6 +129,13 @@ def get_token():
 def upload_file():
     try:
         start_time = time.time()
+        request_data = request.form
+        schema = ValidationEntryRequest()
+
+        schema.load(request_data)
+        title = request_data.get('title')
+        separator = request_data.get('separator')
+        
         # check if the post request has the file part
         if 'file' not in request.files:
             resp = jsonify({'message': 'No file part in the request'})
@@ -123,12 +152,8 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file = request.files['file']
-            try:
-                df = pd.read_csv(request.files.get('file'),
-                                 sep='\t', usecols=[reference_column])
-            except Exception as e:
-                df = pd.read_csv(request.files.get('file'),
-                                 usecols=[reference_column], skipinitialspace=True)
+            df = pd.read_csv(request.files.get('file'),
+                                 sep=separator, usecols=[reference_column], skipinitialspace=True)
             df.iloc[1:]
             bl = benfordslaw(alpha=0.05)
             validation_result = bl.fit(df)
@@ -136,23 +161,30 @@ def upload_file():
             data_dict = {str(int(item[0])): item[1]
                          for item in validation_result['percentage_emp'].tolist()}
             response_data = {
-                'user_id': g.user.id,
                 'passed_validation': passed_validation,
-                'percentages_plot_data': data_dict,
-                'created_at': '',
-                'updated_at': ''
+                'percentages_plot_data': data_dict
             }
-            res = save_result(response_data)
+            res = save_result(title,response_data)
             
             return api_response_success({
                 'user_id': g.user.id,
-                'passed_validation': passed_validation,
-                'percentages_plot_data': data_dict,
+                'user': {
+                    'first_name': g.user.first_name,
+                    'last_name': g.user.last_name,
+                    'email': g.user.email
+                },
+                'title': title,
+                'result': {
+                    'passed_validation': passed_validation,
+                    'percentages_plot_data': data_dict,
+                },
                 'created_at': res.created_at,
                 'updated_at': res.updated_at
             }, start_time)
         else:
             return api_response_error(400, {'message': 'Allowed file types are txt, csv'})
+    except ValidationError as err:
+        return api_response_error(400, err.messages)
     except Exception as e:
         app.logger.error(e)
         return api_response_error(500, {'message': 'There was a problem while parsing the file'})
@@ -201,17 +233,17 @@ def add_user():
 def get_validation_entries():
     try:
         start_time = time.time()
-        schema = BaseValidationEntry(many=True)
-        users = ValidationEntry.query.all()
-        serialized_data = schema.dump(users)
+        schema = SerializedValidationEntry(many=True)
+        entries = ValidationEntry.query.filter(ValidationEntry.user_id == g.user.id)
+        serialized_data = schema.dump(entries)
         return api_response_success(serialized_data, start_time)
     except Exception as e:
         app.logger.error(e)
         return api_response_error(500, {'message': 'There was a problem while retrieving the Validation Entries'})
 
-def save_result(result):
+def save_result(title, result):
     try:
-        entry = ValidationEntry(user_id=g.user.id,
+        entry = ValidationEntry(user_id=g.user.id, title=title,
                                 result=result)
         db.session.add(entry)
         db.session.commit()

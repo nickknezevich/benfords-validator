@@ -8,13 +8,15 @@ export const connector = Axios.create({
 });
 
 const authToken = localStorage.getItem('user');
-// connector.interceptors.request.use((config) => {
-//   config.params = config.params || {};
-//   config.headers = {
-//     Authorization: authToken ? authToken.token : ''
-//   }
-//   return config;
-// });
+connector.interceptors.response.use(response => {
+  return response;
+}, error => {
+  if (error.response.status === 401) {
+      console.log('token expired',error.response)
+      localStorage.removeItem('user');
+  }
+  return Promise.reject(error);
+});
 
 export const getUsers = async query => {
   return connector.get('/api/users?q='+query);

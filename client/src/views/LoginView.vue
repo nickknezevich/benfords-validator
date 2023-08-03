@@ -3,16 +3,16 @@
 import LoginForm from '../components/LoginForm.vue'
 </script>
 <template>
-    <body class="text-center">
+  <body class="text-center">
     <main class="form-signin w-100 m-auto align-items-center justify-content-center">
-        <LoginForm />
+      <LoginForm />
     </main>
-</body>
-  </template>
+  </body>
+</template>
   
-  <style>
-    body {
-        height: 100vh;
-    }
-  </style>
+<style>
+body {
+  height: 100vh;
+}
+</style>
   

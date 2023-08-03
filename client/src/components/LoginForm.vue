@@ -23,7 +23,7 @@ function onSubmit(values, { setErrors }) {
         Username: test<br />
         Password: test
     </div> -->
-    <img class="mb-4" src="@/assets/logo.svg" alt="" width="72" height="57">
+    <img class="mb-4 mt-3" src="@/assets/logo.svg" alt="" width="72" height="57">
     <h1 class="h3 mb-3 fw-normal">Sign in</h1>
     <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
 

@@ -1,1 +1,8 @@
+.current-user {
+    font-size: 12px;
+}
 
+.app-header ul.nav li a.router-link-exact-active {
+    color: black;
+    font-weight: bold;
+}   

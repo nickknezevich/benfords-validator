@@ -1,5 +1,7 @@
 <script setup>
 import { Bar } from 'vue-chartjs'
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 import { Chart as ChartJS, Title, Tooltip, Legend, BarElement, CategoryScale, LinearScale, PointElement, LineElement} from 'chart.js'
 import { defineProps } from 'vue';
 import { Colors } from 'chart.js';
