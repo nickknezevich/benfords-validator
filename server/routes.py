@@ -235,7 +235,7 @@ def get_validation_entries():
     try:
         start_time = time.time()
         schema = SerializedValidationEntry(many=True)
-        entries = ValidationEntry.query.filter(ValidationEntry.user_id == g.user.id)
+        entries = ValidationEntry.query.filter(ValidationEntry.user_id == g.user.id).order_by(ValidationEntry.created_at.desc())
         serialized_data = schema.dump(entries)
         return api_response_success(serialized_data, start_time)
     except Exception as e:

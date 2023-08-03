@@ -36,7 +36,7 @@ export const useValidationEntriesStore = defineStore({
                   }
             });
             // update pinia state
-            this.validationEntries.push(response.data.data);
+            this.validationEntries.unshift(response.data.data);
         },
     },
     getters: {

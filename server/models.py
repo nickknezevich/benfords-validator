@@ -5,8 +5,8 @@ import jwt
 import time
 from werkzeug.security import generate_password_hash, check_password_hash
 
-SECRET_KEY = '1234'
-EXPIRES_IN = 900000000;   
+SECRET_KEY = 'bXlzZWNyZXQ='
+EXPIRES_IN = 1000 * 60 * 24;   
 
 class User(db.Model):
     """Data model for users."""
