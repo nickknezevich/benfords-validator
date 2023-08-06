@@ -53,37 +53,6 @@ services:
     ports:
       - "3311:3306"
 
-  # mini-erp.postgres:
-  #   image: postgres:10.5
-  #   container_name: mini-erp.postgres
-  #   restart: always
-  #   environment:
-  #     - POSTGRES_USER=${POSTGRES_USER}
-  #     - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
-  #   logging:
-  #     options:
-  #       max-size: 10m
-  #       max-file: "3"
-  #   ports:
-  #     - '5438:5432'
-  #   volumes:
-  #     - ./docker/postgres-data:/var/lib/postgresql/data
-  #     # copy the sql script to create tables
-
-  #   networks:
-  #     - mini-erp.network
-
-  # bv.nginx:
-  #   image: webapp-nginx
-  #   container_name: bv.nginx
-  #   build:
-  #     context: ./nginx
-  #     dockerfile: Dockerfile
-  #   ports:
-  #     - 8000:80
-  #   depends_on:
-  #     - bv.server
-
 volumes:
   bv.mysql:
 
