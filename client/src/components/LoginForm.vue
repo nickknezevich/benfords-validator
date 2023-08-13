@@ -19,33 +19,51 @@ function onSubmit(values, { setErrors }) {
 </script>
 
 <template>
-    <!-- <div class="alert alert-info">
-        Username: test<br />
-        Password: test
-    </div> -->
-    <img class="mb-4 mt-3" src="@/assets/logo.svg" alt="" width="72" height="57">
-    <h1 class="h3 mb-3 fw-normal">Sign in</h1>
-    <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
+    <main class="d-flex w-100">
+        <div class="container d-flex flex-column">
+            <div class="row vh-100">
+                <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 mx-auto d-table h-100">
+                    <div class="d-table-cell align-middle">
 
-        <div class="form-group pb-2">
-            <Field name="username" type="text" class="form-control" :class="{ 'is-invalid': errors.username }"
-                placeholder="username" />
-            <div class="invalid-feedback">{{ errors.username }}</div>
+                        <div class="text-center mt-4">
+                            <h1 class="h2">Benford's Validator</h1>
+                            <p class="lead">
+                                Sign in to your account to continue
+                            </p>
+                        </div>
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="m-sm-3">
+                                    <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
+                                        <div class="mb-3">
+                                            <label class="form-label">Email</label>
+                                            <Field name="username" type="email" class="form-control form-control-lg"
+                                                :class="{ 'is-invalid': errors.username }" placeholder="username" />
+                                            <div class="invalid-feedback">{{ errors.username }}</div>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label class="form-label">Password</label>
+                                            <Field name="password" type="password" class="form-control form-control-lg"
+                                                :class="{ 'is-invalid': errors.password }" placeholder="password" />
+                                            <div class="invalid-feedback">{{ errors.password }}</div>
+                                        </div>
+                                        <div class="form-group">
+                                            <button class="w-100 btn btn-lg btn-primary" :disabled="isSubmitting">
+                                                <span v-show="isSubmitting"
+                                                    class="spinner-border spinner-border-sm mr-1"></span>
+                                                Login
+                                            </button>
+                                        </div>
+                                        <div v-if="errors.apiError" class="alert alert-danger mt-3 mb-0">Provided credentials are invalid!</div>
+                                    </Form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <div class="form-group pb-2">
-
-            <Field name="password" type="password" class="form-control" :class="{ 'is-invalid': errors.password }"
-                placeholder="password" />
-            <div class="invalid-feedback">{{ errors.password }}</div>
-        </div>
-        <div class="form-group">
-            <button class="w-100 btn btn-lg btn-primary" :disabled="isSubmitting">
-                <span v-show="isSubmitting" class="spinner-border spinner-border-sm mr-1"></span>
-                Login
-            </button>
-        </div>
-        <div v-if="errors.apiError" class="alert alert-danger mt-3 mb-0">{{ errors.apiError }}</div>
-    </Form>
+    </main>
 </template>
 
 <style>

@@ -24,6 +24,7 @@ class BaseUser(Schema):
     email = fields.String(required=True)
     first_name = fields.String(required=True)
     last_name = fields.String(required=True)
+    picture = fields.String(required=False)
     created_at = fields.String(required=False)
     updated_at = fields.String(required=False)
 
@@ -32,6 +33,7 @@ class SerializedUser(Schema):
     email = fields.String(required=True)
     first_name = fields.String(required=True)
     last_name = fields.String(required=True)
+    picture = fields.String(required=False)
     created_at = fields.String(required=False)
     updated_at = fields.String(required=False)
 
@@ -70,11 +72,6 @@ def hc():
     return {'status': 'ok'}
 
 
-@app.route('/api')
-def index():
-    return "Hello, {}!".format(auth.current_user())
-
-
 @auth.verify_token
 def verify_token(token):
     user = User.verify_auth_token(token)
@@ -107,7 +104,7 @@ def login():
         if not user or not user.verify_password(password):
             return api_response_error(401, {"auth": "failed"})
         g.user = user
-        token = user.generate_auth_token(600)
+        token = user.generate_auth_token(600000)
         schema = BaseUser()
         res = {
             'token': token.decode('ascii'),
@@ -172,7 +169,8 @@ def upload_file():
                 'user': {
                     'first_name': g.user.first_name,
                     'last_name': g.user.last_name,
-                    'email': g.user.email
+                    'email': g.user.email,
+                    'picture': g.user.picture
                 },
                 'title': title,
                 'result': {
@@ -189,7 +187,6 @@ def upload_file():
     except Exception as e:
         app.logger.error(e)
         return api_response_error(500, {'message': 'There was a problem while parsing the file'})
-
 
 @app.route('/api/users', methods=['GET'])
 @auth.login_required
@@ -215,13 +212,14 @@ def add_user():
         result = schema.load(request_data)
         username = request_data.get('username')
         password = request_data.get('password')
+        picture = request_data.get('picture')
         first_name = request_data.get('first_name')
         last_name = request_data.get('last_name')
         email = request_data.get('email')
 
         # Create and persist the user
         user = User(username=username, password=generate_password_hash(password), first_name=first_name,
-                    last_name=last_name, email=email)
+                    last_name=last_name, picture=picture, email=email)
         db.session.add(user)
         db.session.commit()
 

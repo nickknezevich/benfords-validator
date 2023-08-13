@@ -17,6 +17,7 @@ class User(db.Model):
     password = db.Column(db.String(255), nullable=False)
     first_name = db.Column(db.String(255), nullable=False)
     last_name = db.Column(db.String(255), nullable=False)
+    picture = db.Column(db.String(255), nullable=False)
     email = db.Column(db.String(80), index=True, unique=True, nullable=False)
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)
     updated_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.utcnow)

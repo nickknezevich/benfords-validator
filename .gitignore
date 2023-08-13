@@ -1,1 +1,5 @@
 /docker
+/server/tests/__pycache__
+/server/.pytest_cache
+/client/.vscode
+.vscode

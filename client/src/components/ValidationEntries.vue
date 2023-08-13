@@ -13,7 +13,7 @@ onMounted(async () => {
     await store.getAll();
 });
 
-const { validationEntries, loading } = storeToRefs(store);
+const { validationEntries } = storeToRefs(store);
 
 const closeableModal = ref(false);
 const chartsModal = ref(false);
@@ -30,9 +30,7 @@ const openModal = () => {
 
 const openChartsModal = (result) => {
     chartsModal.value = true;
-
     selectedChartResults.value = result
-    console.log(result)
 }
 
 </script>
@@ -41,7 +39,7 @@ const openChartsModal = (result) => {
     <button type="button" class="btn btn-success btn-sm" @click="closeableModal = true">Add New Entry</button>
     <br><br>
     <div class="table-wrap">
-    <table class="table table-hover table-striped" v-if="!loading">
+    <table class="table table-hover table-striped" v-if="validationEntries.values">
         <thead>
             <tr>
                 <th scope="col">Date / Time</th>

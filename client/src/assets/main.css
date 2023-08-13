@@ -5,4 +5,24 @@
 .app-header ul.nav li a.router-link-exact-active {
     color: black;
     font-weight: bold;
-}   
+}
+
+a.active.router-link-exact-active.sidebar-link {
+    font-weight: bold;
+    color: #e6e6e6;
+}
+
+a.active.router-link-exact-active.sidebar-link svg {
+    font-weight: bold;
+    color: #e6e6e6;
+}
+
+.alert.alert-danger {
+    color: red;
+}
+
+@media (min-width: 992px) {
+    .content {
+        padding: 2rem 2rem 1.5rem !important;
+    }
+}

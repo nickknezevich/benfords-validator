@@ -23,7 +23,6 @@ export const useAuthStore = defineStore({
             localStorage.setItem('user', JSON.stringify(this.user));
 
             // redirect to previous url or default to home page
-            //router.push(this.returnUrl || '/');
             window.location.href = this.returnUrl || '/'
         },
         logout() {
@@ -31,8 +30,6 @@ export const useAuthStore = defineStore({
             this.isAuthenticated = false;
             localStorage.removeItem('user');
             router.go('login')
-            //router.push('login');
-            //window.location.href = '/login'
         }
     }
 });
