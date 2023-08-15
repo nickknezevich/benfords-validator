@@ -35,12 +35,15 @@ function onSubmit(values, { setErrors }) {
                 timeout: 2000
             });
             emit("update:modelValue", false) // Close the modal after successful submission
-
         })
-        .catch(error => setErrors({ apiError: error }));
+        .catch(error => {
+            setErrors({ apiError: error })
+            toast.error(`There was an error while adding a new Validation Entry`, {
+                timeout: 2000
+            });
+        });
 
 }
-
 
 </script>
 <template>
