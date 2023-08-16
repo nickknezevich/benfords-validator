@@ -181,7 +181,7 @@ def upload_file():
                 'updated_at': res.updated_at
             }, start_time)
         else:
-            return api_response_error(400, {'message': 'Allowed file types are txt, csv'})
+            return api_response_error(400, {'file': 'Allowed file types are txt, csv, xls, xlsx'})
     except ValidationError as err:
         return api_response_error(400, err.messages)
     except Exception as e:
