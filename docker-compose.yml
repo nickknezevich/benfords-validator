@@ -1,4 +1,4 @@
-version: '3.8'
+version: '3.9'
 
 services:
 
@@ -7,7 +7,8 @@ services:
       context: ./server
       dockerfile: Dockerfile
     depends_on:
-      - bv.mysql
+      bv.mysql:
+        condition: service_healthy
     container_name: bv.server
     environment:
       - FLASK_ENV=development
@@ -25,6 +26,8 @@ services:
       context: ./client
       target: 'develop-stage'
       dockerfile: Dockerfile
+    depends_on:
+      - bv.server
     container_name: bv.client
     ports:
       - 8000:5173
@@ -52,6 +55,10 @@ services:
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
     ports:
       - "3311:3306"
+    healthcheck:
+            test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+            timeout: 20s
+            retries: 10
 
 volumes:
   bv.mysql:
