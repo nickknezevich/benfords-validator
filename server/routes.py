@@ -155,7 +155,7 @@ def upload_file():
             bl = benfordslaw(alpha=0.05)
             validation_result = bl.fit(df)
             app.logger.debug(validation_result)
-            passed_validation = True if validation_result['P_significant'] == False else False
+            passed_validation = False if validation_result['P_significant'] == False else True
             data_dict = {str(int(item[0])): item[1]
                          for item in validation_result['percentage_emp'].tolist()}
             response_data = {
