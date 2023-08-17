@@ -4,7 +4,7 @@ import { Form, Field } from 'vee-validate';
 import * as Yup from 'yup';
 import { mixed } from 'yup';
 import { useValidationEntriesStore } from '../stores/validation_entries.store';
-import { defineProps, defineEmits, ref, toRefs, watch } from 'vue';
+import { ref, toRefs, watch } from 'vue';
 import Modal from './Modal.vue';
 import { useToast } from "vue-toastification";
 
@@ -25,7 +25,10 @@ const modal = ref(false);
 
 const showModal = ref(true);
 
-function onSubmit(values, { setErrors, isSubmitting }) {
+const processingForm = ref(false)
+
+function onSubmit(values, { setErrors }) {
+    processingForm.value = true;
     const validationEntriesStore = useValidationEntriesStore();
     const { title, reference_column, file, separator } = values;
 
@@ -35,12 +38,14 @@ function onSubmit(values, { setErrors, isSubmitting }) {
                 timeout: 2000
             });
             emit("update:modelValue", false) // Close the modal after successful submission
+            processingForm.value = false;
         })
         .catch(error => {
             setErrors(error.response.data.errors)
             toast.error(`There was an error while adding a new Validation Entry`, {
                 timeout: 2000
             });
+            processingForm.value = false;
         });
 
 }
@@ -75,8 +80,8 @@ function onSubmit(values, { setErrors, isSubmitting }) {
                 <small class="text-muted">Eg. \td</small>
             </div>
             <div class="form-group pb-3">
-                <button class="btn btn-lg btn-primary" :disabled="isSubmitting">
-                    <span v-show="isSubmitting" class="spinner-border spinner-border-sm mr-1"></span>
+                <button class="btn btn-lg btn-primary" :disabled="processingForm">
+                    <span v-show="processingForm" class="spinner-border spinner-border-sm mr-1"></span>
                     Save
                 </button>
             </div>
