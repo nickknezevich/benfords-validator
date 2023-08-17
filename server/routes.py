@@ -149,10 +149,15 @@ def upload_file():
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             file = request.files['file']
-            df = pd.read_csv(request.files.get('file'),
+            if separator is None:
+                df = pd.read_csv(request.files.get('file'),
+                                  usecols=[reference_column])
+            else:
+                df = pd.read_csv(request.files.get('file'),
                                  sep=separator, usecols=[reference_column])
             df.iloc[1:]
-            bl = benfordslaw(alpha=0.05, method='chi2')
+            bl = benfordslaw(pos=1)
+            
             validation_result = bl.fit(df)
             app.logger.debug(validation_result)
             passed_validation = False if validation_result['P_significant'] == False else True

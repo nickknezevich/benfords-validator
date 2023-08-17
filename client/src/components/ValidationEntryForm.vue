@@ -25,7 +25,7 @@ const modal = ref(false);
 
 const showModal = ref(true);
 
-function onSubmit(values, { setErrors }) {
+function onSubmit(values, { setErrors, isSubmitting }) {
     const validationEntriesStore = useValidationEntriesStore();
     const { title, reference_column, file, separator } = values;
 

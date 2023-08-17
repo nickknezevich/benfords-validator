@@ -25,7 +25,7 @@ export const useValidationEntriesStore = defineStore({
             bodyFormData.append('title', title);
             bodyFormData.append('file', file);
             bodyFormData.append('reference_column', reference_column);
-            if(separator !== undefined){
+            if(separator){
                 bodyFormData.append('separator', separator);
             }
             
