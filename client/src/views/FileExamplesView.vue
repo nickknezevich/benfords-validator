@@ -14,6 +14,10 @@
                 <td>CSV</td>
             </tr>
             <tr>
+                <td><a href="https://github.com/nickknezevich/benfords-validator/blob/main/client/src/assets/file-examples/population_by_zip_2000.csv">Population by ZIP</a></td>
+                <td>CSV</td>
+            </tr>
+            <tr>
                 <td><a href="https://github.com/nickknezevich/benfords-validator/blob/main/client/src/assets/file-examples/acs2015_census_tract_data.csv">2015 Census Tract Data</a></td>
                 <td>CSV</td>
             </tr>
