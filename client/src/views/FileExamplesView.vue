@@ -14,7 +14,7 @@
                 <td>CSV</td>
             </tr>
             <tr>
-                <td><a href="https://github.com/nickknezevich/benfords-validator/blob/main/client/src/assets/file-examples/population_by_zip_2000.csv">Population by ZIP</a></td>
+                <td><a href="https://github.com/nickknezevich/benfords-validator/blob/main/client/src/assets/file-examples/population_by_zip_2000.csv">Population by ZIP (population)</a></td>
                 <td>CSV</td>
             </tr>
             <tr>

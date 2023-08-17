@@ -150,7 +150,7 @@ def upload_file():
             filename = secure_filename(file.filename)
             file = request.files['file']
             df = pd.read_csv(request.files.get('file'),
-                                 sep=separator, usecols=[reference_column], skipinitialspace=True)
+                                 sep=separator, usecols=[reference_column])
             df.iloc[1:]
             bl = benfordslaw(alpha=0.05, method='chi2')
             validation_result = bl.fit(df)

@@ -52,10 +52,16 @@ def create_app():
                 "passed_validation": True, "percentages_plot_data": {"1": 29.39970267083611, "2": 18.167837186650942, "3": 12.000820218383144, "4": 9.468395960424465, "5": 7.992002870764341, "6": 7.0231199056748865, "7": 5.977341467165633, "8": 5.341672220228636, "9": 4.629107499871841}}
         )
 
+        validationEntry3 = ValidationEntry(user_id=2, title='Population By ZIP 2000 (population column)', 
+            result={
+                "passed_validation": True, "percentages_plot_data": {"1": 30.949444004005677, "2": 17.563227593257114, "3": 12.314711466243846, "4": 9.512369085370942, "5": 7.7730561003087715, "6": 6.625336414086623, "7": 5.710107548193274, "8": 5.046211299340732, "9": 4.505536489193023}}
+        )
+
         db.session.add(user1)
         db.session.add(user2)
         db.session.add(validationEntry1)
         db.session.add(validationEntry2)
+        db.session.add(validationEntry3)
 
         db.session.commit()
 
