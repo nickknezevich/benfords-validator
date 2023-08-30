@@ -17,8 +17,8 @@ Backend will run on http://localhost:5001
 ## Users
 
 There are two created users with following credentials:
-username: jsmith, password: test1234
-username: alincoln, password: test1234
+username: jsmith@gmail.com, password: test1234
+username: alincoln@gmail.com, password: test1234
 
 User jsmith will have two predefined validation entries.
 
