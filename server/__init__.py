@@ -40,8 +40,8 @@ def create_app():
         db.create_all()  # Create database tables for our data models
 
         # seed the example data
-        user1 = User(first_name='John', last_name="Smith", username="jsmith", email="email@google.com", password=generate_password_hash("test1234"), picture="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200")
-        user2 = User(first_name='Andrew', last_name="Lincoln", username="alincoln", email="walkingdead@google.com", password=generate_password_hash("test1234"), picture="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=200")
+        user1 = User(first_name='John', last_name="Smith", username="jsmith@gmail.com", email="jsmith@gmail.com", password=generate_password_hash("test1234"), picture="https://www.gravatar.com/avatar/205e460b479e2e5b48aec07710c08d50?s=200")
+        user2 = User(first_name='Andrew', last_name="Lincoln", username="alincoln@gmail.com", email="alincoln@gmail.com", password=generate_password_hash("test1234"), picture="https://www.gravatar.com/avatar/2c7d99fe281ecd3bcd65ab915bac6dd5?s=200")
 
         validationEntry1 = ValidationEntry(user_id=1, title='World Population Data', 
             result={"passed_validation": False, "percentages_plot_data": {"1": 29.914529914529915, "2": 15.81196581196581, "3": 14.102564102564102, "4": 8.974358974358974, "5": 11.11111111111111, "6": 8.11965811965812, "7": 3.418803418803419, "8": 4.273504273504273, "9": 4.273504273504273}}

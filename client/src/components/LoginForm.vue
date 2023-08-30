@@ -1,78 +1,97 @@
-<script setup>
-import { Form, Field } from 'vee-validate';
-import * as Yup from 'yup';
+<script setup lang="ts">
+import { Form, Field, useField, useForm } from "vee-validate";
+import { ref } from "vue";
+import { storeToRefs } from "pinia";
+import { useAuthStore } from "../stores/auth.store";
 
-import { useAuthStore } from '../stores/auth.store';
-
-const schema = Yup.object().shape({
-    username: Yup.string().required('Username is required'),
-    password: Yup.string().required('Password is required')
+const { handleSubmit, handleReset } = useForm({
+  validationSchema: {
+    username(value: string) {
+      if (/^[a-z.-]+@[a-z.-]+\.[a-z]+$/i.test(value)) return true;
+      return "Must be a valid e-mail.";
+    },
+    password(value: string) {
+      if (value) return true;
+      return "Name needs to be at least 2 characters.";
+    }
+  },
 });
 
-function onSubmit(values, { setErrors }) {
-    const authStore = useAuthStore();
-    const { username, password } = values;
+const username = useField("username");
+const password = useField("password");
+const validationError = ref();
+const authStore = useAuthStore();
+const { isLoading } = storeToRefs(authStore);
 
-    return authStore.login(username, password)
-        .catch(error => setErrors({ apiError: error }));
-}
+const submit = handleSubmit(
+  (values: { username: string; password: string }) => {
+    try {
+      authStore.login(values.username, values.password);
+    } catch (error: any) {
+      validationError.value = error.response.data.errors.message;
+    }
+  }
+);
 </script>
 
 <template>
-    <main class="d-flex w-100">
-        <div class="container d-flex flex-column">
-            <div class="row vh-100">
-                <div class="col-sm-10 col-md-8 col-lg-6 col-xl-5 mx-auto d-table h-100">
-                    <div class="d-table-cell align-middle">
-
-                        <div class="text-center mt-4">
-                            <h1 class="h2">Benford's Validator</h1>
-                            <p class="lead">
-                                Sign in to your account to continue
-                            </p>
-                        </div>
-                        <div class="card">
-                            <div class="card-body">
-                                <div class="m-sm-3">
-                                    <Form @submit="onSubmit" :validation-schema="schema" v-slot="{ errors, isSubmitting }">
-                                        <div class="mb-3">
-                                            <label class="form-label">Email</label>
-                                            <Field name="username" type="email" class="form-control form-control-lg"
-                                                :class="{ 'is-invalid': errors.username }" placeholder="username" />
-                                            <div class="invalid-feedback">{{ errors.username }}</div>
-                                        </div>
-                                        <div class="mb-3">
-                                            <label class="form-label">Password</label>
-                                            <Field name="password" type="password" class="form-control form-control-lg"
-                                                :class="{ 'is-invalid': errors.password }" placeholder="password" />
-                                            <div class="invalid-feedback">{{ errors.password }}</div>
-                                        </div>
-                                        <div class="form-group">
-                                            <button class="w-100 btn btn-lg btn-primary" :disabled="isSubmitting">
-                                                <span v-show="isSubmitting"
-                                                    class="spinner-border spinner-border-sm mr-1"></span>
-                                                Login
-                                            </button>
-                                        </div>
-                                        <div v-if="errors.apiError" class="alert alert-danger mt-3 mb-0">Provided credentials are invalid!</div>
-                                    </Form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </main>
+  <v-container class="fill-height">
+    <v-row align="center" justify="center" class="fill-height">
+      <!-- <v-sheet class="mx-auto login-form" max-width="344"> -->
+      <div class="text-center mt-4">
+        <img
+          src="@/assets/img/logo-larger-white.png"
+          height="32"
+          class="mb-3"
+        />
+        <p class="lead">Sign in to your account to continue</p>
+        <v-sheet class="mt-5 pt-5 pl-5 pb-5 pr-5" :width="330" rounded>
+          <form @submit.prevent="submit">
+            <v-text-field
+              v-model="username.value.value"
+              variant="outlined"
+              :error-messages="username.errorMessage.value"
+              label="Email"
+              class="mb-2"
+            ></v-text-field>
+            <v-text-field
+              v-model="password.value.value"
+              :error-messages="password.errorMessage.value"
+              label="Password"
+              variant="outlined"
+              class="mb-2"
+              type="password"
+            ></v-text-field>
+            <v-btn
+              :disabled="isLoading"
+              :loading="isLoading"
+              block
+              class="text-none mb-1"
+              color="light-green-darken-1"
+              size="x-large"
+              variant="flat"
+              @click="submit"
+            >
+              Sign In
+            </v-btn>
+          </form>
+        </v-sheet>
+      </div>
+    </v-row>
+  </v-container>
 </template>
 
 <style>
 .form-signin {
-    max-width: 330px;
-    padding: 15px;
+  max-width: 330px;
+  padding: 15px;
 }
 
 .w-100 {
-    width: 100% !important;
+  width: 100% !important;
+}
+
+.v-card {
+  overflow-y: none !important;
 }
 </style>

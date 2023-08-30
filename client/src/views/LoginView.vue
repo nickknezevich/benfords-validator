@@ -1,5 +1,5 @@
 
-<script setup>
+<script setup lang="ts">
 import LoginForm from '../components/LoginForm.vue'
 </script>
 <template>
@@ -11,4 +11,3 @@ body {
 	height: 100vh;
 }
 </style>
-  

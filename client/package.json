@@ -1,29 +1,42 @@
 {
-  "name": "client",
+  "name": "recogniz",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "dev": "vite --host",
-    "build": "vite build",
-    "preview": "vite preview"
+    "build": "run-p type-check build-only",
+    "preview": "vite preview",
+    "test:unit": "vitest",
+    "build-only": "vite build",
+    "type-check": "vue-tsc --noEmit -p tsconfig.vitest.json --composite false"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.8",
+    "@vuepic/vue-datepicker": "^6.0.2",
     "axios": "^1.4.0",
-    "bootstrap": "^5.3.1",
-    "bootstrap-icons": "^1.10.5",
-    "chart.js": "^4.3.2",
-    "pinia": "^2.1.4",
-    "vee-validate": "^4.11.0",
+    "moment": "^2.29.4",
+    "pinia": "^2.1.6",
+    "prettier": "^3.0.3",
+    "vee-validate": "^4.11.2",
     "vue": "^3.3.4",
     "vue-chartjs": "^5.2.0",
     "vue-router": "^4.2.4",
-    "vue-toastification": "^2.0.0-rc.5",
-    "vue-use-popperjs": "^2",
-    "yup": "^1.2.0"
+    "vuetify": "^3.3.13"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^4.2.3",
-    "vite": "^4.4.6"
+    "@tsconfig/node18": "^18.2.0",
+    "@types/jsdom": "^21.1.1",
+    "@types/node": "^20.5.3",
+    "@vitejs/plugin-vue": "^4.3.1",
+    "@vue/test-utils": "^2.4.1",
+    "@vue/tsconfig": "^0.4.0",
+    "chart.js": "^4.3.2",
+    "eslint": "^8.48.0",
+    "eslint-plugin-vue": "^9.17.0",
+    "jsdom": "^22.1.0",
+    "npm-run-all": "^4.1.5",
+    "typescript": "~5.1.6",
+    "vite": "^4.4.9",
+    "vitest": "^0.34.2",
+    "vue-tsc": "^1.8.8"
   }
 }

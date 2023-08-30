@@ -12,6 +12,7 @@ from benfordslaw import benfordslaw
 from .models import User, ValidationEntry, db
 import logging
 logging.getLogger('flask_cors').level = logging.DEBUG
+from sqlalchemy import and_, or_, func
 
 # Base Marschallow Seralized Schemas
 class Login(Schema):
@@ -135,7 +136,7 @@ def upload_file():
         
         # check if the post request has the file part
         if 'file' not in request.files:
-            resp = jsonify({'message': 'No file part in the request'})
+            resp = jsonify({'file': 'No file provided in the request'})
             resp.status_code = 400
             return resp
         file = request.files['file']
@@ -170,6 +171,7 @@ def upload_file():
             res = save_result(title,response_data)
             
             return api_response_success({
+                'id': res.id,
                 'user_id': g.user.id,
                 'user': {
                     'first_name': g.user.first_name,
@@ -238,7 +240,14 @@ def get_validation_entries():
     try:
         start_time = time.time()
         schema = SerializedValidationEntry(many=True)
-        entries = ValidationEntry.query.filter(ValidationEntry.user_id == g.user.id).order_by(ValidationEntry.created_at.desc())
+        date = request.args.get('date')
+        passed_validation = bool(request.args.get('passed_validation'))
+        filter = [
+            ValidationEntry.user_id == g.user.id
+        ]
+        if date is not None: 
+            filter.append(func.date(ValidationEntry.created_at) == date)
+        entries = ValidationEntry.query.filter(and_(*filter)).order_by(ValidationEntry.created_at.desc())
         serialized_data = schema.dump(entries)
         return api_response_success(serialized_data, start_time)
     except Exception as e:

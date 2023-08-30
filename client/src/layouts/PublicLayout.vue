@@ -1,7 +1,5 @@
-
-<script start>
-
-</script>
 <template>
-    <router-view />
+    <v-app id="recogniz">
+        <router-view />
+    </v-app>
 </template>

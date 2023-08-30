@@ -1,28 +1,43 @@
-.current-user {
-    font-size: 12px;
+.v-application {
+  background-color: var(--v-background-base) !important;
 }
 
-.app-header ul.nav li a.router-link-exact-active {
-    color: black;
-    font-weight: bold;
+a.post-author, a.post-recipient {
+  text-decoration: none !important;
+  color: #cac8c4 !important;
 }
 
-a.active.router-link-exact-active.sidebar-link {
-    font-weight: bold;
-    color: #e6e6e6;
+a.post-title {
+  color: #52f361 !important;
 }
 
-a.active.router-link-exact-active.sidebar-link svg {
-    font-weight: bold;
-    color: #e6e6e6;
+a.post-title:hover {
+  color: #fff !important;
 }
 
-.alert.alert-danger {
-    color: red;
+a.comment-link {
+  text-decoration: none !important;
+  color: #fff !important;
+  font-weight: bold;
 }
 
-@media (min-width: 992px) {
-    .content {
-        padding: 2rem 2rem 1.5rem !important;
-    }
+a.comments-link {
+  text-decoration: none !important;
+  color: #fff !important;
+}
+
+a.comment-link:hover, a.comments-link:hover, a.post-recipient:hover {
+  text-decoration: none !important;
+  color: #fff !important;
+}
+
+.post-comment-wrapper {
+  background-color: #2e2e2e;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+div.user-profile {
+  position: sticky;
+  top: 80px;
 }
